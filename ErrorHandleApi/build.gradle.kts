@@ -1,7 +1,10 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinCocoapods)
     alias(libs.plugins.androidLibrary)
+
     id("maven-publish")
     id("signing")
 }
@@ -14,14 +17,22 @@ kotlin {
             }
         }
     }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    val iosTargets = listOf(iosX64(), iosArm64(), iosSimulatorArm64())
 
+
+    val xcf = XCFramework()
+    iosTargets.forEach {
+        it.binaries.framework {
+            baseName = "ErrorHandleApi"
+            xcf.add(this)
+        }
+    }
     cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        version = "1.0"
+        summary = "Handle Error Apis with Failure class"
+        homepage = "https://github.com/the-best-is-best/KtorHandleErrorApiIos"
+        source = "{:git=> 'https://github.com/the-best-is-best/KtorHandleErrorApiIos.git' }"
+        version = "1.0.0"
+
         ios.deploymentTarget = "14.0"
         framework {
             baseName = "ErrorHandleApi"

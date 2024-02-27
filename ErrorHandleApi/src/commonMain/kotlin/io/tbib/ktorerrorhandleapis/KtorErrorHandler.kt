@@ -57,7 +57,6 @@ class InitErrorMessage {
 
 class KtorErrorHandler {
     suspend fun handle(e: Any): Failure {
-        val errorsString = InitErrorMessage
         when (e) {
             is ClientRequestException -> {
                 val statusCode = e.response.status.value
